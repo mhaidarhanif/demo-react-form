@@ -6,7 +6,7 @@ type Inputs = {
   exampleRequired: string;
 };
 
-export function Example() {
+export function ExampleReactHookForm() {
   const {
     register,
     handleSubmit,
