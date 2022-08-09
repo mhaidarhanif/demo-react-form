@@ -1,4 +1,4 @@
-# Welcome to Remix!
+# Basic React Remix
 
 - [Remix Docs](https://remix.run/docs)
 
@@ -34,8 +34,8 @@ If you're familiar with deploying node applications, the built-in Remix app serv
 
 Make sure to deploy the output of `remix build`
 
-- `build/`
-- `public/build/`
+- `build/` - Server Side
+- `public/build/` - Client Side
 
 ### Using a Template
 
