@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function App() {
+  const [interestsCount, setInterestsCount] = useState<number>();
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -14,9 +18,17 @@ export default function App() {
     );
 
     const interests = formData.getAll("interest");
-    Object.assign(data, { ...data, interests });
+    Object.assign(data, {
+      ...data,
+      interests,
+      interestsCount: interests.length,
+    });
 
     console.log(data);
+
+    if (data.interestsCount) {
+      setInterestsCount(Number(data.interestsCount));
+    }
   }
 
   return (
@@ -177,6 +189,12 @@ export default function App() {
             <label htmlFor="interestOther">Other</label>
             <input type="text" id="interestOther" name="interestOther" />
           </div>
+
+          {interestsCount && (
+            <output name="interests-result" htmlFor="interest">
+              {interestsCount} interests
+            </output>
+          )}
         </fieldset>
 
         <button type="submit">Save contact</button>
