@@ -1,7 +1,29 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
+
+type State = {
+  hp: number;
+};
+
+type Action = {
+  type: string;
+  payload: {
+    hp: number;
+  };
+};
+
+function reducer(state: State, action: Action) {
+  if (action.type === "CHANGE_HP") {
+    return {
+      hp: action.payload.hp,
+    };
+  }
+  throw Error("Unknown action.");
+}
 
 export default function App() {
-  const [interestsCount, setInterestsCount] = useState<number>();
+  const [interestsCount, setInterestsCount] = useState<number>(0);
+  const [bioTextLength, setBioTextLength] = useState<number>(0);
+  const [state, dispatch] = useReducer(reducer, { hp: 0 });
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,6 +51,11 @@ export default function App() {
     if (data.interestsCount) {
       setInterestsCount(Number(data.interestsCount));
     }
+  }
+
+  function handleChangeBio(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    const bioText = event.target.value;
+    setBioTextLength(bioText.length);
   }
 
   return (
@@ -109,6 +136,13 @@ export default function App() {
               max={100}
               step={10}
               list="healthPointTickmarks"
+              value={state.hp}
+              onChange={(event) => {
+                dispatch({
+                  type: "CHANGE_HP",
+                  payload: { hp: event.target.valueAsNumber },
+                });
+              }}
             />
             <datalist id="healthPointTickmarks">
               <option value="0" label="0%" />
@@ -129,12 +163,16 @@ export default function App() {
             <label htmlFor="pet-select">Pet:</label>
             <select name="pet" id="pet-select">
               <option value="">--Choose an option--</option>
-              <option value="Cat">Cat</option>
-              <option value="Dog">Dog</option>
-              <option value="Hamster">Hamster</option>
-              <option value="Parrot">Parrot</option>
-              <option value="Spider">Spider</option>
-              <option value="Gold Fish">Goldfish</option>
+              <optgroup label="Conventional">
+                <option value="Cat">Cat</option>
+                <option value="Dog">Dog</option>
+                <option value="Gold Fish">Goldfish</option>
+              </optgroup>
+              <optgroup label="Non-Conventional">
+                <option value="Hamster">Hamster</option>
+                <option value="Parrot">Parrot</option>
+                <option value="Spider">Spider</option>
+              </optgroup>
             </select>
           </div>
 
@@ -146,7 +184,9 @@ export default function App() {
               cols={30}
               rows={5}
               placeholder="What do you think you are?"
+              onChange={handleChangeBio}
             />
+            {bioTextLength > 0 && <output>{bioTextLength} characters</output>}
           </div>
 
           {/* <div>
@@ -190,16 +230,24 @@ export default function App() {
             <input type="text" id="interestOther" name="interestOther" />
           </div>
 
-          {interestsCount && (
+          {interestsCount > 0 && (
             <output name="interests-result" htmlFor="interest">
-              {interestsCount} interests
+              {interestsCount} interest{interestsCount > 1 && "s"}
             </output>
           )}
         </fieldset>
 
-        <button type="submit">Save contact</button>
+        <button
+          type="submit"
+          style={{ opacity: state.hp / 100 }}
+          disabled={state.hp <= 50}
+        >
+          Save contact
+        </button>
         <button type="reset">Reset</button>
       </form>
+
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </div>
   );
 }
