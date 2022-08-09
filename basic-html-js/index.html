@@ -10,22 +10,50 @@
   <body>
     <h1>Basic HTML and JS</h1>
 
-    <form id="form-contacts">
+    <form id="formNewContact">
       <fieldset>
         <legend>Contact name</legend>
 
         <div>
-          <label for="first-name">First name</label>
-          <input name="first-name" type="text" placeholder="First name" />
+          <label for="firstName">First name</label>
+          <input
+            name="firstName"
+            type="text"
+            placeholder="First name"
+            autocomplete="on"
+            required
+          />
         </div>
 
         <div>
-          <label for="last-name">Last name</label>
-          <input name="last-name" type="text" placeholder="Last name" />
+          <label for="lastName">Last name</label>
+          <input
+            name="lastName"
+            type="text"
+            placeholder="Last name"
+            autocomplete="on"
+            required
+          />
+        </div>
+
+        <div>
+          <label>Test A</label>
+          <input name="testA" type="text" value="Test A" />
+        </div>
+
+        <div>
+          <label>Test B</label>
+          <input name="testB" type="text" value="Test B" />
+        </div>
+
+        <div>
+          <label>Test C</label>
+          <input name="testC" type="text" value="Test C" />
         </div>
       </fieldset>
 
       <button type="submit">Save contact</button>
+      <button type="reset">Reset</button>
     </form>
 
     <script src="index.js"></script>
